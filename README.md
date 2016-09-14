@@ -12,12 +12,13 @@ them into the database.
 ## How to use
 
 With the files located in the same directory:
-1. Navigate to that directory with the command line
-2. Type `python database_setup.py` to initialize the database.  
-3. Type `python lotsofmenus.py` to populate the database with 
+
+   1. Navigate to that directory with the command line
+   2. Type `python database_setup.py` to initialize the database.  
+   3. Type `python lotsofmenus.py` to populate the database with 
 restaurants and menu items (Optional).  
-4. Type `python project.py` to run the Flask web server. 
-5. In your browser visit http://localhost:5000 to view the
+   4. Type `python project.py` to run the Flask web server. 
+   5. In your browser visit http://localhost:5000 to view the
 restaurant menu app.  
 
 You should be able to view, add, edit, and delete menu items and 
