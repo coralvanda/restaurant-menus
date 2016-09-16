@@ -23,7 +23,6 @@ class Restaurant(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
-    #user = relationship("User")
     menu_items = relationship("MenuItem", cascade="all")
 
     @property
@@ -44,9 +43,7 @@ class MenuItem(Base):
     price = Column(String(8))
     course = Column(String(250))
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
-    #restaurant = relationship("Restaurant", cascade="all")
     user_id = Column(Integer, ForeignKey('user.id'))
-    #user = relationship("User")
 
     @property
     def serialize(self):
@@ -62,5 +59,4 @@ class MenuItem(Base):
 
 engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 
-#Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
