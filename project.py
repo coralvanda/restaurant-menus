@@ -301,9 +301,9 @@ def owner_required(f):
         restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
         if login_session['user_id'] != restaurant.user_id:
             return "<script>function myFunction() {alert('You are not " \
-            "authorized to add menu items to this restaurant. Please create " \
-            "your own restaurant in order to add items.');}</script><body " \
-            "onload='myFunction()''>"
+                "authorized to add menu items to this restaurant. Please " \
+                "create your own restaurant in order to add items.');}" \
+                "</script><body onload='myFunction()''>"
         return f(restaurant_id, **kwargs)
     return decorated_function
 
@@ -333,8 +333,8 @@ def newRestaurant():
         return render_template('newRestaurant.html')
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
-@owner_required
 @login_required
+@owner_required
 def editRestaurant(restaurant_id):
     """Edit a restaurant"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
@@ -349,8 +349,8 @@ def editRestaurant(restaurant_id):
 
 
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
-@owner_required
 @login_required
+@owner_required
 def deleteRestaurant(restaurant_id):
     """Delete a restaurant"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
@@ -383,8 +383,8 @@ def showMenu(restaurant_id):
 
 
 @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
-@owner_required
 @login_required
+@owner_required
 def newMenuItem(restaurant_id):
     """Create a new menu item"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
@@ -405,8 +405,8 @@ def newMenuItem(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', 
     methods=['GET', 'POST'])
-@owner_required
 @login_required
+@owner_required
 def editMenuItem(restaurant_id, menu_id):
     """Edit a menu item"""
     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
@@ -431,8 +431,8 @@ def editMenuItem(restaurant_id, menu_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', 
     methods=['GET', 'POST'])
-@owner_required
 @login_required
+@owner_required
 def deleteMenuItem(restaurant_id, menu_id):
     """Delete a menu item"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
