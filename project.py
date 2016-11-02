@@ -24,7 +24,7 @@ APPLICATION_NAME = "Restaurant Menu Application"
 
 
 # Connect to Database and create database session
-engine = create_engine('postgresql+psycopg2://catalog:catalog@/menus')
+engine = create_engine('sqlite:///restaurantmenuwithusers.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -57,7 +57,7 @@ def fbconnect():
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type='
     url += 'fb_exchange_token&client_id='
-    url += '%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret,
+    url += '%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, 
         access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -77,8 +77,8 @@ def fbconnect():
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
 
-    # The token must be stored in the login_session in order to
-    # properly logout, let's strip out the information before
+    # The token must be stored in the login_session in order to 
+    # properly logout, let's strip out the information before 
     # the equals sign in our token
     stored_token = token.split("=")[1]
     login_session['access_token'] = stored_token
@@ -105,7 +105,7 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;' 
     output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
     flash("Now logged in as %s" % login_session['username'])
@@ -212,7 +212,7 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;' 
     output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
@@ -241,7 +241,7 @@ def getUserID(email):
         return user.id
     except:
         return None
-
+ 
 @app.route('/gdisconnect')
 def gdisconnect():
     """Disconnect a user
@@ -313,7 +313,7 @@ def showRestaurants():
     """Show all restaurants"""
     restaurants = session.query(Restaurant).order_by(asc(Restaurant.name))
     if 'username' not in login_session:
-        return render_template('publicrestaurants.html',
+        return render_template('publicrestaurants.html', 
             restaurants=restaurants)
     else:
         return render_template('restaurants.html', restaurants=restaurants)
@@ -344,7 +344,7 @@ def editRestaurant(restaurant_id):
             flash('Restaurant Successfully Edited %s' % restaurant.name)
             return redirect(url_for('showRestaurants'))
     else:
-        return render_template('editRestaurant.html',
+        return render_template('editRestaurant.html', 
             restaurant=restaurant)
 
 
@@ -360,7 +360,7 @@ def deleteRestaurant(restaurant_id):
         session.commit()
         return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
     else:
-        return render_template('deleteRestaurant.html',
+        return render_template('deleteRestaurant.html', 
             restaurant=restaurant)
 
 @app.route('/restaurant/<int:restaurant_id>/')
@@ -372,13 +372,13 @@ def showMenu(restaurant_id):
     items = session.query(MenuItem).filter_by(
         restaurant_id=restaurant_id).all()
     if 'username' not in login_session:
-        return render_template('publicmenu.html', items=items,
+        return render_template('publicmenu.html', items=items, 
             restaurant=restaurant, creator=creator)
     elif creator.id != login_session['user_id']:
-        return render_template('publicmenu.html', items=items,
+        return render_template('publicmenu.html', items=items, 
             restaurant=restaurant, creator=creator)
     else:
-        return render_template('menu.html', items=items,
+        return render_template('menu.html', items=items, 
             restaurant=restaurant, creator=creator)
 
 
@@ -389,11 +389,11 @@ def newMenuItem(restaurant_id):
     """Create a new menu item"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
-        newItem = MenuItem(name=request.form['name'],
-                        description=request.form['description'],
-                        price=request.form['price'],
-                        course=request.form['course'],
-                        restaurant_id=restaurant_id,
+        newItem = MenuItem(name=request.form['name'], 
+                        description=request.form['description'], 
+                        price=request.form['price'], 
+                        course=request.form['course'], 
+                        restaurant_id=restaurant_id, 
                         user_id=restaurant.user_id)
         session.add(newItem)
         session.commit()
@@ -403,7 +403,7 @@ def newMenuItem(restaurant_id):
         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
 
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit',
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', 
     methods=['GET', 'POST'])
 @login_required
 @owner_required
@@ -429,7 +429,7 @@ def editMenuItem(restaurant_id, menu_id):
             menu_id=menu_id, item=editedItem)
 
 
-@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete',
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', 
     methods=['GET', 'POST'])
 @login_required
 @owner_required
